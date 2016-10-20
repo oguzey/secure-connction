@@ -9,11 +9,12 @@ RUN cd openssl-master && make test || echo "Tests fails"
 RUN cd openssl-master && make install
 RUN ldconfig
 
-RUN mkdir /src /src/build /ssl-certificates
-COPY ./server.c ./client.c ./common.h ./CMakeLists.txt /src/
+RUN mkdir /src /ssl-certificates
+COPY ./src/ /src/
+COPY ./build.sh /build.sh
 COPY ./ssl-certificates /ssl-certificates
 
-RUN cd /src/build && cmake .. && make
+RUN /build.sh
 ENV PATH "/src/build:$PATH"
 
 CMD ["secure-server"]
