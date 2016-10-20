@@ -1,0 +1,11 @@
+$ openssl ecparam -name secp521r1 -out ca-key.pem -genkey
+$ openssl req -new -x509 -days 365 -key ca-key.pem -out ca-cert.pem
+
+$ openssl genrsa -out server-key.pem 4096
+$ openssl req -new -key server-key.pem -out server-csr.pem
+$ openssl x509 -req -days 365 -in server-csr.pem -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out server-cert.pem 
+
+$ openssl ecparam -name secp521r1 -out client-key.pem -genkey
+$ openssl req -new -key client-key.pem -out client-csr.pem
+$ openssl x509 -req -days 365 -in client-csr.pem -CA ca-cert.pem -CAkey ca-key.pem -set_serial 02 -out client-cert.pem
+
